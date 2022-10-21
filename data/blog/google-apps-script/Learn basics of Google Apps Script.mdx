@@ -1,0 +1,214 @@
+---
+title: 'Learn Basics of Google Apps Scripts'
+date: 2022-10-20T15:32:14Z
+lastmod: '2021-02-01'
+tags: ['google-apps-script', 'google-sheet']
+draft: false
+summary: 'Learn basics of Google Apps script with the help of sample codes, small projects and more ...'
+layout: PostSimple
+bibliography: references-data.bib
+canonicalUrl: https://tailwind-nextjs-starter-blog.vercel.app/blog/basics-of-gas/
+---
+<TOCInline toc={props.toc} asDisclosure />
+## What is Google Apps Script
+
+A cloud-based JavaScript platform that lets you integrate with and automate tasks across Google products.It  is a rapid application development platform that makes it fast and easy to create business applications that integrate with G Suite.
+ ### It lets you to
+ - Write code that programmatically performs tasks across Google products. Automations are set in motion by custom menus, buttons, user actions, or a time-based schedule.
+ - Write Google Sheets functions in Apps Script and call them from your spreadsheet just like built-in functions.
+ - Build an app that automates tasks or connects to third-party services from within Google Workspace. Share your solution with others on the Google Workspace Marketplace.
+
+### Features
+- Build with Google: Feature-rich APIs let you extend Google services and build your own web applications.
+- Code on the Web: A web browser is all you need to build with Google Apps Script.
+- Share your App: Store and share your projects in Google Drive or publish on the Chrome Web Store.
+
+## Frequently used scripts
+
+### Spreadsheet functions
+[Reference doc](https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app)
+- Getting active spreadsheet
+```js
+// The code below makes the 2nd sheet active in the active spreadsheet.
+var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+```
+- Creat new Spreadsheet
+```js
+// The code below creates a new spreadsheet "Finances" and logs the URL for it
+var ssNew = SpreadsheetApp.create("Finances");
+Logger.log(ssNew.getUrl());
+// The code below creates a new spreadsheet "Finances" with 50 rows and 5 columns and logs the
+// URL for it
+var ssNew = SpreadsheetApp.create("Finances", 50, 5);
+Logger.log(ssNew.getUrl());
+```
+- Open Spreadsheet
+```js
+// The code below opens a spreadsheet using its id and logs the name for it.
+// Note that the spreadsheet is NOT physically opened on the client side.
+// It is opened on the server only (for modification by the script).
+var ss = SpreadsheetApp.openByUrl(
+    'https://docs.google.com/spreadsheets/d/abc1234567/edit');
+Logger.log(ss.getName());
+
+// The code below opens a spreadsheet using its URL.
+var ss = SpreadsheetApp.openById("abc1234567");
+Logger.log(ss.getName());
+```
+- Getting active Spreadsheet, Sheet, Range, Ranges
+```js
+// The code below logs the URL for the active spreadsheet.
+Logger.log(SpreadsheetApp.getActive().getUrl());
+// The code below logs the URL for the active spreadsheet.
+Logger.log(SpreadsheetApp.getActiveSpreadsheet().getUrl());
+// The code below logs the background color for the active range.
+var colorObject = SpreadsheetApp.getActiveRange().getBackgroundObject();
+// Assume the color has ColorType.RGB.
+Logger.log(colorObject.asRgbColor().asHexString());
+var selection = SpreadsheetApp.getSelection();
+var currentCell = selection.getCurrentCell();
+```
+- Getting last row, last column, number of rows, number of columns
+```js
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getSheets()[0];
+
+// This logs the value in the very last cell of this sheet
+var lastRow = sheet.getLastRow();
+var lastColumn = sheet.getLastColumn();
+var lastCell = sheet.getRange(lastRow, lastColumn);
+Logger.log(lastCell.getValue());
+
+// This example assumes there is a sheet named "first"
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var first = ss.getSheetByName("first");
+Logger.log(first.getMaxRows());
+// This example assumes there is a sheet named "first"
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var first = ss.getSheetByName("first");
+Logger.log(first.getMaxColumns());
+
+```
+
+### Sheet functions
+- Insert new sheet
+```js
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+ss.insertSheet('My New Sheet');
+//Inserts a new sheet into the spreadsheet with the given name and uses optional advanced arguments. The new sheet becomes the active sheet.
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var templateSheet = ss.getSheetByName('Sales');
+ss.insertSheet('My New Sheet', {template: templateSheet});
+```
+- Reading and writing values
+```js
+
+// Reading range
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getSheets()[0];
+// When the "numRows" argument is used, only a single column of data is returned.
+var range = sheet.getRange(1, 1, 3);
+var values = range.getValues();
+
+// Prints 3 values from the first column, starting from row 1.
+for (var row in values) {
+  for (var col in values[row]) {
+    Logger.log(values[row][col]);
+  }
+}
+
+// Reading Data Range
+
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getSheets()[0];
+
+// This represents ALL the data
+var range = sheet.getDataRange();
+var values = range.getValues();
+
+// This logs the spreadsheet in CSV format with a trailing comma
+for (var i = 0; i < values.length; i++) {
+  var row = "";
+  for (var j = 0; j < values[i].length; j++) {
+    if (values[i][j]) {
+      row = row + values[i][j];
+    }
+    row = row + ",";
+  }
+  Logger.log(row);
+// Appends a new row with 3 columns to the bottom of the current
+// data region in the sheet containing the values in the array.
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getSheets()[0];
+sheet.appendRow(["a man", "a plan", "panama"]);
+}
+```
+
+### Range functions
+- Getting value or values
+```js
+// The code below gets the values for the range C2:G8
+// in the active spreadsheet.  Note that this is a JavaScript array.
+var values = SpreadsheetApp.getActiveSheet().getRange(2, 3, 6, 4).getValues();
+Logger.log(values[0][0]);
+// The code below gets the displayed values for the range C2:G8
+// in the active spreadsheet.  Note that this is a JavaScript array.
+var values = SpreadsheetApp.getActiveSheet().getRange(2, 3, 6, 4).getDisplayValues();
+Logger.log(values[0][0]);
+```
+
+### Menu, dialogs & sidebars
+#### Custom Menu
+```js:Code.gs
+// Menus & sub menus
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  // Or DocumentApp or FormApp.
+  ui.createMenu('Custom Menu')
+      .addItem('First item', 'menuItem1')
+      .addSeparator()
+      .addSubMenu(ui.createMenu('Sub-menu')
+          .addItem('Second item', 'menuItem2'))
+      .addToUi();
+}
+
+function menuItem1() {
+  SpreadsheetApp.getUi() // Or DocumentApp or FormApp.
+     .alert('You clicked the first menu item!');
+}
+
+function menuItem2() {
+  SpreadsheetApp.getUi() // Or DocumentApp or FormApp.
+     .alert('You clicked the second menu item!');
+}
+
+
+
+```
+#### Sidebars
+```js:Code.gs
+function onOpen() {
+  SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
+      .createMenu('Custom Menu')
+      .addItem('Show sidebar', 'showSidebar')
+      .addToUi();
+}
+
+function showSidebar() {
+  var html = HtmlService.createHtmlOutputFromFile('Page')
+      .setTitle('My custom sidebar');
+  SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
+      .showSidebar(html);
+}
+```
+```html:Page.html
+Hello, world! <input type="button" value="Close" onclick="google.script.host.close()" />
+```
+
+
+## Developing environment
+You can develop Apps Script Project both locally or in the web browser.
+- Local development: You can use your favourite IDE. Mine is [Visual Studio Code](https://code.visualstudio.com/download). You will also need additional tool called [CLASP](https://developers.google.com/apps-script/guides/clasp), a command line utility tool developed by Google for local development.
+- Script Editor in the browser: You can either open up [Script Editor](https://script.google.com) or attached script to Google Sheet or Google Doc by clicking on Extensions > Apps Script.
+
+## Sample

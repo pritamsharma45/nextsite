@@ -1,0 +1,56 @@
+---
+title: 'Basic Data entry in Google sheets using Google Apps Scripts'
+date: 2022-10-20T15:32:14Z
+lastmod: '2021-02-01'
+tags: ['google-apps-script', 'google-sheet','sample-project']
+draft: false
+summary: 'A simple data entry in Google Sheet using Apps Script'
+layout: PostSimple
+bibliography: references-data.bib
+canonicalUrl: https://tailwind-nextjs-starter-blog.vercel.app/blog/basic-data-entry/
+---
+
+
+<TOCInline toc={props.toc} asDisclosure />
+## Overview
+This is a small sample project to show you how to use Apps Script to do data entry in google sheet.
+
+[Make a copy](https://docs.google.com/spreadsheets/d/1_sECfLK1CHOxQxNhLPpsHgFh2b_KKVCMnGCJi40ytXQ/copy) of the sample project file. Watch [Demo](https://www.loom.com/share/e7df7cd70fb240b1af170043d05dc8f9)
+
+## Preparing our data entry form
+
+-This is how our form looks
+![Form](https://drive.google.com/uc?id=1MrwZKYLw57n6FWQ4UJROxmq5kxKXkaIf)
+-The drop-down fields in our form takes data from Dropdowns tab of the Spreadsheet.
+-See below how we validate our drop-down
+![Validation](https://drive.google.com/uc?id=1ZbNVqXetPzre_cRPrsv77Odyx-CWfoUD)
+
+## Apps Script Code to handle data entry
+```js:Code.gs
+function SUBMIT_FORM_3() {
+
+  const FORM_SHEET_NAME = "Form 3";
+  const FORM_RANGE_ARRAY = ['B4','B6','D4','D6'];
+  const RECORD_SHEET_NAME = "Record";
+
+  const formSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(FORM_SHEET_NAME);
+  const recordSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(RECORD_SHEET_NAME);
+
+  // Get Form Data
+  const formData = FORM_RANGE_ARRAY.map(el=>formSheet.getRange(el).getValue());  // 
+  console.log(formData);
+
+  // Check if all the fields are filled
+  const isFormFilled = formData.includes('');
+  
+  if (!isFormFilled) {
+    //  Add form data to record
+    recordSheet.appendRow(formData);
+    //  Clear Form
+    FORM_RANGE_ARRAY.forEach(el=>formSheet.getRange(el).clearContent());
+  } else {
+    Browser.msgBox("Please fill all the details!");
+  }
+
+}
+```
