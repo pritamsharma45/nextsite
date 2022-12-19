@@ -1,0 +1,27 @@
+---
+title: Adding Namecheap domain to your Vercel App
+date: '2017-07-15'
+tags: ['how-to']
+draft: true
+summary: This article will show you steps that need to be followed to set up Namecheap domain in your Vercel App.
+---
+
+##
+
+When you deploy your site on Vercel, you get automatically fancy domain like nextsite-pritamsharma45.vercel.app.
+But when you want to add domain, sometimes you need to look around and explore the steps that needs to be followed.
+So, I thought to pen down the process to save your sometime.
+
+[X] Set up on Vercel side - Head to Vercel Dashboard - Go to settings tab - Select Domains - Add your site domain
+After adding you will see some warning ##IMAGE## . This will be removed after you have done minor setup on Namecheap account.
+
+[X] Setup on Namecheap account
+
+    - Login to your Namecheap account.
+    - Click on Domain List appearing on the sidebar.
+    - Now choose the Domain you want to add.
+    - Click Manage
+    - Now from the Nameservers section click on the dropdown and select Custom DNS.
+    - Now paste the Vercels' DNS addresses copied during Vecrel project setup procedures.
+    - Click on the green check mark to save it.
+    - Done! It would take some time. Visit your newly added domain after 10-20 minutes. It should be live by then.
