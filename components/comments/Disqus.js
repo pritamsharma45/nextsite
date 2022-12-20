@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { DiscussionEmbed } from 'disqus-react'
 
 import siteMetadata from '@/data/siteMetadata'
 
@@ -16,7 +17,8 @@ const Disqus = ({ frontMatter }) => {
     }
     if (window.DISQUS === undefined) {
       const script = document.createElement('script')
-      script.src = 'https://' + siteMetadata.comment.disqusConfig.shortname + '.disqus.com/embed.js'
+      // script.src = 'https://' + siteMetadata.comment.disqusConfig.shortname + '.disqus.com/embed.js'
+      script.src = 'https://techlever.disqus.com/embed.js'
       script.setAttribute('data-timestamp', +new Date())
       script.setAttribute('crossorigin', 'anonymous')
       script.async = true
@@ -35,3 +37,18 @@ const Disqus = ({ frontMatter }) => {
 }
 
 export default Disqus
+
+// const Disqus = ({ frontMatter }) => {
+//   const disqusShortname = 'techlever';
+//   const disqusConfig = {
+//     url: window.location.href,
+//     identifier: frontMatter.slug, // Single post id
+//     title: frontMatter.title, // Single post title
+//   }
+//   return (
+//     <div>
+//       <DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
+//     </div>
+//   )
+// }
+// export default Disqus
