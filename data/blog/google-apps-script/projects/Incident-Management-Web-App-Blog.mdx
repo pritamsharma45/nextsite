@@ -1,0 +1,166 @@
+---
+title: 'Incident Management Web App'
+date: 2022-10-20T15:32:14Z
+lastmod: '2021-02-01'
+tags: ['google-apps-script', 'google-sheet', 'sample-project']
+draft: false
+summary: 'In this article we will s ...'
+layout: PostSimple
+bibliography: references-data.bib
+canonicalUrl: https://tailwind-nextjs-starter-blog.vercel.app/blog/basics-of-gas/
+---
+
+# Streamline Your Operations with Our Incident Management Web App: A Google Sheets-Powered Solution
+
+Managing incidents efficiently is critical for businesses across industries, from IT support to healthcare. In this blog post, we’ll explore our powerful **Incident Management Web Application**, a versatile tool that integrates seamlessly with Google Sheets to streamline incident tracking and resolution. Whether you’re handling IT issues, customer complaints, or healthcare incidents, this app offers robust user management and task tracking features to keep your operations running smoothly. Watch the full demo on [YouTube](https://www.youtube.com/watch?v=your-video-id) to see it in action!
+
+[Insert Screenshot: Application Dashboard Overview]
+
+Interested in customizing this app for your specific needs? [Click here to request a customization](#) via Gumroad and get started today!
+
+## Why Choose Our Incident Management Web App?
+
+This application is designed to simplify incident management across various sectors. Here’s how it can transform your workflow:
+
+- **IT Support Management**: Track and resolve technical issues like server downtime or software bugs with assigned tasks and real-time status updates.
+- **Customer Service**: Log and manage customer inquiries or complaints, ensuring timely responses and resolutions.
+- **Facility Management**: Monitor and address facility-related incidents, such as equipment failures or safety hazards, with detailed task assignments.
+- **Project Issue Tracking**: Identify and resolve project-specific problems by assigning tasks to team members for efficient resolution.
+- **Healthcare Incident Reporting**: Record and track medical or operational incidents in healthcare settings, ensuring compliance and follow-up actions.
+
+For this blog, we’ll focus on **healthcare incident reporting** to showcase the app’s capabilities, but its flexibility makes it adaptable to any industry.
+
+## Key Features of the Incident Management Web App
+
+The application is built with a user-friendly, two-panel layout that enhances productivity and ease of use. Here’s a breakdown of its core features:
+
+- **Incident List Panel (Left)**:
+  - Displays all incidents with key details: title, description, priority, status, and assigned team.
+  - Filter incidents by incident number, caller, status, priority, assignee, or department using the intuitive filter panel.
+
+[Insert Screenshot: Incident List Panel with Filters]
+
+- **Incident Details Panel (Right)**:
+  - Provides comprehensive information about the selected incident, including tasks, notes, and activity history.
+  - Features a tabbed interface for seamless navigation between tasks, notes, and activities.
+  - Allows creation of new tasks with a single click using the “+ Task” button.
+
+[Insert Screenshot: Incident Details Panel with Tabs]
+
+- **Task Management**:
+  - Filter tasks by state and priority for efficient management.
+  - View tasks in a modal with a tabbed interface showing task details, notes, and activity history.
+  - Activities and notes are displayed in a clear timeline format, showing who made updates and when.
+
+[Insert Screenshot: Task Modal with Timeline View]
+
+- **Dropdown Management**:
+
+  - Manage dropdowns for callers, assignment groups, categories, and service areas.
+  - Add new entries directly via the incident creation form for maximum flexibility.
+
+- **User Management**:
+  - Super admins can send invitations, manage users, and update roles.
+  - All users can update their profile information and passwords via a dedicated settings panel.
+
+## Step-by-Step Guide to Using the Incident Management Web App
+
+Let’s walk through the workflow of creating and managing an incident, as demonstrated in the [YouTube video](https://www.youtube.com/watch?v=your-video-id).
+
+### Step 1: Create a New Incident
+
+1. Click the **“+ Incident”** button to open the incident creation form.
+2. The incident number is auto-generated, and the “open date” defaults to today’s date.
+3. Enter a short description of the incident.
+4. Select a caller from the creatable dropdown (or add a new caller with name, email, and phone number).
+5. Set the priority (defaults to “Medium”) and state (defaults to “New”).
+6. Choose an assignment group (e.g., Radiology, Imaging, or Nursing in a healthcare context).
+7. Add a detailed description and click **“Create”** to save the incident.
+
+[Insert Screenshot: Incident Creation Form]
+
+### Step 2: Update an Incident
+
+1. Select the newly created incident from the left panel.
+2. Update fields like priority or status as needed.
+3. Navigate to the **Activity Tab** to view a timeline of changes (e.g., “Priority changed from Medium to High by Super Admin on [date]”).
+
+[Insert Screenshot: Activity Tab with Update Timeline]
+
+### Step 3: Add and Manage Tasks
+
+1. Click the **“+ Task”** button to create a task for the selected incident.
+2. Enter a short and detailed description, set priority (defaults to “Medium”), and assign a user or affected configuration item (CI).
+3. Submit the task and edit it later using the pencil icon if needed.
+4. View task details in a modal with tabs for task information, notes, and activities.
+5. Add notes to tasks or incidents, which are logged in a clear timeline format.
+
+[Insert Screenshot: Task Creation Form]
+
+### Step 4: Customize Dropdowns
+
+1. Access the dropdown section to manage callers, assignment groups, categories, or service areas.
+2. Add new entries directly in the incident creation form for seamless customization.
+
+[Insert Screenshot: Dropdown Management Section]
+
+## Setting Up a New Incident Management Web App
+
+Ready to make this app your own? Follow these steps to deploy and configure it:
+
+1. **Make a Copy of the Spreadsheet**:
+
+   - Use the link provided in the [YouTube video description](https://www.youtube.com/watch?v=your-video-id) to copy the Google Sheets template.
+
+2. **Deploy the Web App**:
+   - Open the spreadsheet and navigate to **Extensions > Apps Script**.
+   - Click **Deploy > New Deployment**.
+   - Select **Web App** as the deployment type.
+   - In the description, enter “Version 1” (or any description).
+   - Set **Execute As** to “Me” and **Who Has Access** to “Only Myself.”
+   - Click **Deploy** and authorize the necessary permissions.
+   - Copy the provided **Web App URL** after deployment.
+
+[Insert Screenshot: Apps Script Deployment Screen]
+
+3. **Set Up Users**:
+   - In the spreadsheet, click the custom menu **Incident Management > Setup and Add Test Users**.
+   - This adds test users with different roles (password: “1234”).
+   - View users in the **Users** tab of the spreadsheet.
+
+[Insert Screenshot: Users Tab in Google Sheets]
+
+4. **Access the App**:
+   - Open the Web App URL in a new tab.
+   - Log in as a **Super Admin** to explore the full functionality.
+
+[Insert Screenshot: Login Screen]
+
+## Super Admin Features
+
+As a Super Admin, you have access to exclusive features to manage the application effectively:
+
+- **Change Profile**: Update your name or password via the profile settings dialog (available to all users).
+- **Send Invitation**: Invite new users by entering their email, selecting a role, and sending an invitation with a registration password.
+- **Manage Invitations**: View and delete pending invitations, including email, role, status, and invitation code.
+- **Manage Users**: View all users’ details (name, email, role, status), delete users (except Super Admin), or update roles.
+
+[Insert Screenshot: Super Admin User Management Panel]
+
+## Future Enhancements
+
+We’re committed to improving this application. Future updates will include:
+
+- Enhanced role-based access controls for better security and customization.
+- Additional integrations with other platforms beyond Google Sheets.
+- Advanced reporting and analytics for deeper insights into incident trends.
+
+Stay tuned for these exciting updates, and let us know your feedback!
+
+## Get Started Today
+
+Ready to streamline your incident management? Watch the full demo on [YouTube](https://www.youtube.com/watch?v=your-video-id) to see the app in action. For customizations tailored to your business needs, [click here to request a customization](#) via Gumroad. Our team is ready to help you optimize this tool for your unique workflow.
+
+[Insert Screenshot: Call-to-Action Section with Gumroad Button]
+
+If you found this blog post helpful, please like the video, subscribe to our channel, and share your thoughts in the comments. Thanks for reading, and we’ll see you in the next one!
