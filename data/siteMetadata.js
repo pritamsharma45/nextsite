@@ -1,6 +1,6 @@
 const siteMetadata = {
   title: 'Blog',
-  author: 'Pritam Sharma',
+  author: 'TechLever',
   headerTitle: 'TechLever',
   description: 'A blog to ..',
   language: 'en-us',
@@ -11,11 +11,11 @@ const siteMetadata = {
   image: '/static/images/avatar.png',
   socialBanner: '/static/images/twitter-card.png',
   email: 'sharma.pritam311@gmail.com',
-  github: 'https://github.com',
-  twitter: 'https://twitter.com/Twitter',
-  facebook: 'https://facebook.com',
+  github: 'https://github.com/pritamsharma45',
+  twitter: 'https://x.com/pritamsharma45',
+  // facebook: 'https://facebook.com',
   youtube: 'https://youtube.com/@tech-lever',
-  linkedin: 'https://www.linkedin.com',
+  linkedin: 'https://www.linkedin.com/in/pritam45/',
   locale: 'en-US',
   analytics: {
     plausibleDataDomain: '', // e.g. tailwind-nextjs-starter-blog.vercel.app

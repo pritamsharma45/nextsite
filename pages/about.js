@@ -11,44 +11,6 @@ export default function About() {
         title={`About - ${siteMetadata.author}`}
         description={`About me - ${siteMetadata.author}`}
       />
-
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-100/20 to-purple-100/20 dark:from-primary-900/20 dark:to-purple-900/20"></div>
-        </div>
-        <div className="max-w-10xl relative mx-auto px-4 py-24 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="mb-8">
-              <Image
-                src="/static/images/avatar.png"
-                alt="Pritam Sharma"
-                width="200px"
-                height="200px"
-                className="mx-auto h-48 w-48 rounded-full border-4 border-white shadow-2xl dark:border-gray-800"
-              />
-            </div>
-            <h1 className="text-5xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl lg:text-7xl">
-              <span className="block">Hello, I'm</span>
-              <span className="block bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Pritam Sharma
-              </span>
-            </h1>
-            <p className="mx-auto mt-6 max-w-3xl text-xl text-gray-600 dark:text-gray-300 sm:text-2xl">
-              Full-Stack Developer & Productivity Enthusiast creating solutions that make work
-              easier
-            </p>
-            <div className="mt-8 flex justify-center space-x-6">
-              <SocialIcon kind="github" href={siteMetadata.github} />
-              <SocialIcon kind="linkedin" href={siteMetadata.linkedin} />
-              <SocialIcon kind="twitter" href={siteMetadata.twitter} />
-              <SocialIcon kind="youtube" href={siteMetadata.youtube} />
-              <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* About Content */}
       <div className="bg-white py-20 dark:bg-gray-900">
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
