@@ -1,15 +1,6 @@
 {
   "google-apps-script": 6,
   "google-sheet": 6,
-  "sample-project": 5,
-  "next-js": 4,
-  "tailwind": 2,
-  "guide": 4,
-  "math": 1,
-  "ols": 1,
-  "github": 1,
-  "holiday": 1,
-  "canada": 1,
-  "images": 1,
-  "how-to": 2
+  "how-to": 1,
+  "sample-project": 5
 }
