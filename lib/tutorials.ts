@@ -1,6 +1,23 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkGfm from 'remark-gfm'
+import remarkRehype from 'remark-rehype'
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeStringify from 'rehype-stringify'
+import rehypePrismPlus from 'rehype-prism-plus'
+import { refractor } from 'refractor'
+import { toHtml } from 'hast-util-to-html'
+import js from 'refractor/javascript'
+import ts from 'refractor/typescript'
+import markup from 'refractor/markup'
+import cssLang from 'refractor/css'
+import jsonLang from 'refractor/json'
+import py from 'refractor/python'
+import md from 'refractor/markdown'
 
 const tutorialsDirectory = path.join(process.cwd(), 'data/tutorials')
 
@@ -22,12 +39,72 @@ export interface CodeFile {
   name: string
   content: string
   language: string
+  html?: string
 }
 
 export interface Tutorial {
   name: string
   slug: string
   levels: string[]
+}
+
+async function convertMarkdownToHtml(markdown: string): Promise<string> {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeSlug)
+    .use(rehypeAutolinkHeadings, { behavior: 'wrap' })
+    .use(rehypePrismPlus, { ignoreMissing: true })
+    .use(rehypeStringify, { allowDangerousHtml: true })
+    .process(markdown)
+  return String(file)
+}
+
+function getTutorialLevelOrder(tutorialPath: string): string[] {
+  // Try to load order.json first
+  const orderJsonPath = path.join(tutorialPath, 'order.json')
+  if (fs.existsSync(orderJsonPath)) {
+    try {
+      const orderData = JSON.parse(fs.readFileSync(orderJsonPath, 'utf8'))
+      return orderData.levels || []
+    } catch (error) {
+      console.warn(`Failed to parse order.json for tutorial: ${tutorialPath}`, error)
+    }
+  }
+
+  // Try to load order.ts as fallback
+  const orderTsPath = path.join(tutorialPath, 'order.ts')
+  if (fs.existsSync(orderTsPath)) {
+    try {
+      const orderContent = fs.readFileSync(orderTsPath, 'utf8')
+
+      // More robust regex to handle multi-line arrays and different formatting
+      const match = orderContent.match(/export\s+const\s+levels\s*=\s*\[([\s\S]*?)\]/)
+      if (match) {
+        const levelsString = match[1]
+        const levels = levelsString
+          .split(',')
+          .map((level) => level.trim().replace(/['"]/g, '').replace(/\s+/g, ' '))
+          .filter((level) => level.length > 0 && !level.startsWith('//'))
+        return levels
+      }
+    } catch (error) {
+      console.warn(`Failed to parse order.ts for tutorial: ${tutorialPath}`, error)
+    }
+  }
+
+  // Fallback to default order
+  return [
+    'beginner',
+    'level1',
+    'basic',
+    'intermediate',
+    'advanced',
+    'level2',
+    'level3',
+    'completed',
+  ]
 }
 
 export function getAvailableTutorials(): Tutorial[] {
@@ -42,15 +119,30 @@ export function getAvailableTutorials(): Tutorial[] {
 
   return tutorialFolders.map((folderName) => {
     const tutorialPath = path.join(tutorialsDirectory, folderName)
-    const levels = fs
+    const availableLevels = fs
       .readdirSync(tutorialPath, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name)
-      .sort((a, b) => {
-        // Sort levels: beginner/level1 first, then intermediate, then advanced
-        const order = ['beginner', 'level1', 'basic', 'intermediate', 'advanced']
-        return order.indexOf(a) - order.indexOf(b)
-      })
+
+    const order = getTutorialLevelOrder(tutorialPath)
+
+    // Sort levels according to the order configuration
+    const levels = availableLevels.sort((a, b) => {
+      const aIndex = order.indexOf(a)
+      const bIndex = order.indexOf(b)
+
+      // If both levels are in the order, sort by their position
+      if (aIndex !== -1 && bIndex !== -1) {
+        return aIndex - bIndex
+      }
+
+      // If only one level is in the order, prioritize it
+      if (aIndex !== -1) return -1
+      if (bIndex !== -1) return 1
+
+      // If neither level is in the order, sort alphabetically
+      return a.localeCompare(b)
+    })
 
     return {
       name: folderName,
@@ -86,10 +178,14 @@ export async function getTutorialLevelData(
   const fileContents = fs.readFileSync(levelPath, 'utf8')
   const { data, content } = matter(fileContents)
 
+  const html = content?.trim()
+    ? await convertMarkdownToHtml(content)
+    : getDefaultTutorialContent(tutorial.name, level)
+
   return {
     title: data.title || `${tutorial.name} - ${level.charAt(0).toUpperCase() + level.slice(1)}`,
     description: data.description || `Learn ${tutorial.name} at ${level} level`,
-    content: content || getDefaultTutorialContent(tutorial.name, level),
+    content: html,
     metadata: {
       difficulty: data.difficulty || level,
       estimatedTime: data.estimatedTime,
@@ -115,24 +211,46 @@ export function getCodeFiles(tutorialSlug: string, level: string): CodeFile[] {
 
   const files = fs.readdirSync(filesPath)
 
+  // Ensure languages are registered exactly once
+  ;[js, ts, markup, cssLang, jsonLang, py, md].forEach((lang: any) => {
+    try {
+      refractor.register(lang)
+    } catch {
+      // already registered
+    }
+  })
+
   return files.map((fileName) => {
     const filePath = path.join(filesPath, fileName)
     const content = fs.readFileSync(filePath, 'utf8')
     const extension = path.extname(fileName).toLowerCase()
 
     let language = 'text'
-    if (extension === '.js') language = 'javascript'
-    else if (extension === '.ts') language = 'typescript'
-    else if (extension === '.html') language = 'html'
+    if (extension === '.js' || extension === '.gs') language = 'javascript'
+    else if (extension === '.ts' || extension === '.tsx') language = 'typescript'
+    else if (extension === '.html' || extension === '.htm') language = 'markup'
     else if (extension === '.css') language = 'css'
     else if (extension === '.json') language = 'json'
     else if (extension === '.py') language = 'python'
-    else if (extension === '.md') language = 'markdown'
+    else if (extension === '.md' || extension === '.mdx') language = 'markdown'
+
+    let highlighted = ''
+    try {
+      if (language !== 'text' && refractor.registered(language)) {
+        const tree = refractor.highlight(content, language)
+        highlighted = toHtml(tree)
+      } else {
+        highlighted = toHtml({ type: 'text', value: content } as any)
+      }
+    } catch {
+      highlighted = toHtml({ type: 'text', value: content } as any)
+    }
 
     return {
       name: fileName,
       content,
       language,
+      html: highlighted,
     }
   })
 }

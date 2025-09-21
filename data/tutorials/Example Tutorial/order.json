@@ -1,0 +1,47 @@
+{
+  "levels": [
+    "getting-started",
+    "basics", 
+    "intermediate",
+    "advanced",
+    "final-project"
+  ],
+  "metadata": {
+    "description": "Example tutorial showing custom level ordering",
+    "version": "1.0.0",
+    "author": "Tutorial Creator",
+    "lastUpdated": "2024-01-01"
+  },
+  "levelMetadata": {
+    "getting-started": {
+      "title": "Getting Started",
+      "description": "Introduction and setup",
+      "estimatedTime": "15 minutes",
+      "difficulty": "beginner"
+    },
+    "basics": {
+      "title": "Basic Concepts", 
+      "description": "Core functionality",
+      "estimatedTime": "30 minutes",
+      "difficulty": "beginner"
+    },
+    "intermediate": {
+      "title": "Intermediate Features",
+      "description": "Advanced functionality",
+      "estimatedTime": "45 minutes", 
+      "difficulty": "intermediate"
+    },
+    "advanced": {
+      "title": "Advanced Topics",
+      "description": "Expert-level features",
+      "estimatedTime": "60 minutes",
+      "difficulty": "advanced"
+    },
+    "final-project": {
+      "title": "Final Project",
+      "description": "Complete implementation",
+      "estimatedTime": "90 minutes",
+      "difficulty": "advanced"
+    }
+  }
+}

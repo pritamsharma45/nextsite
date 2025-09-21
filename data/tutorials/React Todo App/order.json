@@ -1,0 +1,7 @@
+{
+  "levels": ["beginner", "intermediate", "advanced"],
+  "metadata": {
+    "description": "React Todo App tutorial progression",
+    "version": "1.0.0"
+  }
+}

@@ -56,7 +56,10 @@ export default function CodeTabs({ tutorialSlug, level, files }: CodeTabsProps) 
         </div>
 
         <pre className="overflow-x-auto p-4 text-sm">
-          <code className={`language-${activeFile.language}`}>{activeFile.content}</code>
+          <code
+            className={`language-${activeFile.language}`}
+            dangerouslySetInnerHTML={{ __html: activeFile.html || '' }}
+          />
         </pre>
       </div>
     </div>

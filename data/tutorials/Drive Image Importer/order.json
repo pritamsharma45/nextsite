@@ -1,0 +1,7 @@
+{
+  "levels": ["level1", "level2", "level3", "completed"],
+  "metadata": {
+    "description": "Drive Image Importer tutorial progression",
+    "version": "1.0.0"
+  }
+}

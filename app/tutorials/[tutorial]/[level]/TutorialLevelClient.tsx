@@ -237,7 +237,7 @@ export default function TutorialLevelClient({
           </div>
 
           {/* Tutorial Content */}
-          <div className="prose dark:prose-dark mb-8 max-w-none">
+          <div className="prose dark:prose-invert mb-8 max-w-none">
             <div dangerouslySetInnerHTML={{ __html: levelData.content }} />
           </div>
 
