@@ -1,0 +1,328 @@
+@import "./tailwind.css";
+
+/**
+ * Enhanced CSS Styles for code highlighting with beautiful light/dark theme support.
+ * Features: No line highlighting, clean appearance, modern gradients, smooth transitions
+ */
+
+/* ==================================== */
+/* CODE TITLE STYLES                    */
+/* ==================================== */
+
+.remark-code-title {
+  @apply rounded-t-lg bg-gradient-to-r from-slate-700 to-slate-800 px-6 py-4 font-mono text-sm font-semibold text-slate-100 shadow-sm;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  transition: all 0.3s ease;
+}
+
+.dark .remark-code-title {
+  @apply bg-gradient-to-r from-slate-800 to-slate-900 text-slate-200;
+  border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+}
+
+.remark-code-title + div > pre {
+  @apply mt-0 rounded-t-none border-t-0;
+}
+
+/* ==================================== */
+/* CODE BLOCK CONTAINER STYLES          */
+/* ==================================== */
+
+.code-highlight {
+  @apply relative overflow-hidden rounded-lg shadow-lg;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  transition: all 0.3s ease;
+}
+
+.dark .code-highlight {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+.code-highlight:hover {
+  @apply shadow-xl;
+  transform: translateY(-1px);
+}
+
+/* ==================================== */
+/* CODE LINE STYLES - CLEAN & MINIMAL   */
+/* ==================================== */
+
+.code-line {
+  @apply block px-6 py-1;
+  border: none !important;
+  background: transparent !important;
+  transition: background-color 0.2s ease;
+}
+
+.code-line:hover {
+  background: rgba(59, 130, 246, 0.05) !important;
+}
+
+.dark .code-line:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Remove inserted/deleted line styling */
+.code-line.inserted,
+.code-line.deleted {
+  @apply bg-transparent;
+}
+
+/* ==================================== */
+/* LINE NUMBER STYLES - SUBTLE & CLEAN  */
+/* ==================================== */
+
+.line-number::before {
+  @apply mr-6 inline-block w-6 text-right text-slate-400 select-none;
+  content: attr(line);
+  font-size: 0.875rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.dark .line-number::before {
+  @apply text-slate-500;
+}
+
+.code-line:hover .line-number::before {
+  opacity: 1;
+}
+
+/* ==================================== */
+/* BASE CODE STYLES                     */
+/* ==================================== */
+
+pre[class*="language-"],
+code[class*="language-"] {
+  @apply font-mono text-sm leading-relaxed;
+  background: transparent !important;
+  margin: 0;
+  padding: 1.5rem !important;
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  scrollbar-width: thin;
+}
+
+pre[class*="language-"]::-webkit-scrollbar {
+  height: 8px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-track {
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 4px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 4px;
+}
+
+.dark pre[class*="language-"]::-webkit-scrollbar-track {
+  background: rgba(71, 85, 105, 0.2);
+}
+
+.dark pre[class*="language-"]::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.5);
+}
+
+/* ==================================== */
+/* LIGHT THEME SYNTAX HIGHLIGHTING      */
+/* ==================================== */
+
+:root:not(.dark) pre[class*="language-"],
+:root:not(.dark) code[class*="language-"] {
+  color: #334155;
+}
+
+:root:not(.dark) .token.comment,
+:root:not(.dark) .token.prolog,
+:root:not(.dark) .token.doctype,
+:root:not(.dark) .token.cdata {
+  color: #64748b;
+  font-style: italic;
+}
+
+:root:not(.dark) .token.punctuation {
+  color: #475569;
+}
+
+:root:not(.dark) .token.property,
+:root:not(.dark) .token.tag,
+:root:not(.dark) .token.boolean,
+:root:not(.dark) .token.number,
+:root:not(.dark) .token.constant,
+:root:not(.dark) .token.symbol,
+:root:not(.dark) .token.deleted {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+:root:not(.dark) .token.selector,
+:root:not(.dark) .token.attr-name,
+:root:not(.dark) .token.string,
+:root:not(.dark) .token.char,
+:root:not(.dark) .token.builtin,
+:root:not(.dark) .token.inserted {
+  color: #16a34a;
+  font-weight: 500;
+}
+
+:root:not(.dark) .token.operator,
+:root:not(.dark) .token.entity,
+:root:not(.dark) .token.url,
+:root:not(.dark) .language-css .token.string,
+:root:not(.dark) .style .token.string {
+  color: #ea580c;
+}
+
+:root:not(.dark) .token.atrule,
+:root:not(.dark) .token.keyword {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+:root:not(.dark) .token.function,
+:root:not(.dark) .token.class-name {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+:root:not(.dark) .token.regex,
+:root:not(.dark) .token.important,
+:root:not(.dark) .token.variable {
+  color: #c2410c;
+}
+
+/* ==================================== */
+/* DARK THEME SYNTAX HIGHLIGHTING       */
+/* ==================================== */
+
+:root.dark pre[class*="language-"],
+:root.dark code[class*="language-"] {
+  color: #e2e8f0;
+}
+
+:root.dark .token.comment,
+:root.dark .token.prolog,
+:root.dark .token.doctype,
+:root.dark .token.cdata {
+  color: #64748b;
+  font-style: italic;
+}
+
+:root.dark .token.punctuation {
+  color: #94a3b8;
+}
+
+:root.dark .token.namespace {
+  opacity: 0.7;
+}
+
+:root.dark .token.property,
+:root.dark .token.tag,
+:root.dark .token.boolean,
+:root.dark .token.number,
+:root.dark .token.constant,
+:root.dark .token.symbol,
+:root.dark .token.deleted {
+  color: #f87171;
+  font-weight: 500;
+}
+
+:root.dark .token.selector,
+:root.dark .token.attr-name,
+:root.dark .token.string,
+:root.dark .token.char,
+:root.dark .token.builtin,
+:root.dark .token.inserted {
+  color: #4ade80;
+  font-weight: 500;
+}
+
+:root.dark .token.operator,
+:root.dark .token.entity,
+:root.dark .token.url,
+:root.dark .language-css .token.string,
+:root.dark .style .token.string {
+  color: #fb923c;
+}
+
+:root.dark .token.atrule,
+:root.dark .token.keyword {
+  color: #a78bfa;
+  font-weight: 600;
+}
+
+:root.dark .token.function,
+:root.dark .token.class-name {
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+:root.dark .token.regex,
+:root.dark .token.important,
+:root.dark .token.variable {
+  color: #f59e0b;
+}
+
+/* ==================================== */
+/* TYPOGRAPHY & FORMATTING              */
+/* ==================================== */
+
+.token.important,
+.token.bold {
+  font-weight: 700;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+/* Remove all line highlighting styles */
+.highlight-line,
+.code-line.inserted,
+.code-line.deleted {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* ==================================== */
+/* MODERN ENHANCEMENTS                   */
+/* ==================================== */
+
+/* Add subtle glow effect for better focus */
+.code-highlight:focus-within {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2), 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.dark .code-highlight:focus-within {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3), 0 8px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Smooth transitions for theme switching */
+pre[class*="language-"],
+code[class*="language-"],
+.code-highlight,
+.remark-code-title,
+.token {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .code-line {
+    @apply px-4;
+  }
+  
+  pre[class*="language-"],
+  code[class*="language-"] {
+    padding: 1rem !important;
+  }
+  
+  .line-number::before {
+    @apply mr-3 w-4;
+  }
+}

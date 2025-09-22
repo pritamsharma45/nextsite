@@ -1,5 +1,5 @@
 'use client'
-
+import 'css/prismCustom.css'
 import { useState } from 'react'
 import Link from 'next/link'
 import CodeTabs from '@/components/CodeTabs'

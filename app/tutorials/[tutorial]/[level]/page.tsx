@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import 'css/prismCustom.css'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { genPageMetadata } from 'app/seo'
