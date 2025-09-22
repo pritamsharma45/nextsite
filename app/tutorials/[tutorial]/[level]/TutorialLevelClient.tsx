@@ -52,10 +52,11 @@ export default function TutorialLevelClient({
   const isLastLevel = currentLevelIndex === tutorialData.levels.length - 1
 
   return (
+    <>
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 min-w-64 flex-shrink-0 transform bg-white shadow-lg transition-transform duration-200 lg:relative lg:translate-x-0 dark:bg-gray-800 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-1/4 flex-shrink-0 transform bg-white shadow-lg transition-transform duration-200 lg:relative lg:translate-x-0 dark:bg-gray-800 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -94,11 +95,11 @@ export default function TutorialLevelClient({
           </div>
 
           {/* Level Navigation */}
-          <nav className="flex-1 overflow-y-auto">
+          <nav className="overflow-y-auto">
             <h3 className="mb-4 p-4 text-sm font-medium text-gray-900 dark:text-gray-100">
               Levels
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 mb-4">
               {tutorialData.levels.map((level) => (
                 <li key={level}>
                   <Link
@@ -119,8 +120,7 @@ export default function TutorialLevelClient({
               ))}
             </ul>
           </nav>
-        </div>
-         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
          <span className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-8">More from TechLever YouTube Channel</span>
          <div className="mt-4">
          <YoutubeSidebar
@@ -129,7 +129,8 @@ export default function TutorialLevelClient({
             />
          </div>
    
-          </div>     
+          </div>    
+        </div> 
         
       </div>
 
@@ -147,66 +148,40 @@ export default function TutorialLevelClient({
       )}
 
       {/* Main Content */}
-      <div className="flex-1 lg:ml-0">
-        {/* Mobile Header */}
-        <div className="border-b border-gray-200 bg-white px-4 py-3 lg:hidden dark:border-gray-700 dark:bg-gray-900">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="rounded p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-              {tutorialData.name}
-            </h1>
-            <div className="w-8" /> {/* Spacer */}
-          </div>
-        </div>
+      <div className="flex w-3/4 shadow-lg">
 
         {/* Content Area */}
-        <div className="mx-auto max-w-4xl px-4 py-8 lg:px-8">
+        <div className="mx-auto w-full px-4 py-8 lg:px-8">
           {/* Content Header */}
           <div className="mb-8">
             <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">
               {levelData.title}
             </h1>
-            <p className="mb-4 text-lg text-gray-600 dark:text-gray-400">{levelData.description}</p>
-
+            <p className="text-lg text-gray-600 dark:text-gray-400">{levelData.description}</p>
+            <div className="rounded-lg py-4">
+              <div className="flex flex-row gap-4">
+                <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                  <span
+                    className={`mr-2 inline-block h-2 w-2 rounded-full ${getLevelStyles(
+                      levelData.metadata.difficulty || tutorialData.level
+                    )}`}
+                  />
+                  {(levelData.metadata.difficulty || tutorialData.level)
+                    ?.charAt(0)
+                    .toUpperCase() +
+                    (levelData.metadata.difficulty || tutorialData.level)?.slice(1)}
+                </div>
+                {levelData.metadata.estimatedTime && (
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    ⏱️ {levelData.metadata.estimatedTime}
+                  </div>
+                )}
+              </div>
+            </div>
             {/* Metadata Cards */}
             {levelData.metadata && (
-              <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* Difficulty & Time */}
-                <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
-                  <h3 className="mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                    Level Info
-                  </h3>
-                  <div className="space-y-1">
-                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                      <span
-                        className={`mr-2 inline-block h-2 w-2 rounded-full ${getLevelStyles(
-                          levelData.metadata.difficulty || tutorialData.level
-                        )}`}
-                      />
-                      {(levelData.metadata.difficulty || tutorialData.level)
-                        ?.charAt(0)
-                        .toUpperCase() +
-                        (levelData.metadata.difficulty || tutorialData.level)?.slice(1)}
-                    </div>
-                    {levelData.metadata.estimatedTime && (
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        ⏱️ {levelData.metadata.estimatedTime}
-                      </div>
-                    )}
-                  </div>
-                </div>
 
                 {/* Prerequisites */}
                 {levelData.metadata.prerequisites &&
@@ -216,16 +191,11 @@ export default function TutorialLevelClient({
                         Prerequisites
                       </h3>
                       <ul className="space-y-1">
-                        {levelData.metadata.prerequisites.slice(0, 3).map((prereq, index) => (
+                        {levelData.metadata.prerequisites.map((prereq, index) => (
                           <li key={index} className="text-sm text-gray-600 dark:text-gray-400">
                             • {prereq}
                           </li>
                         ))}
-                        {levelData.metadata.prerequisites.length > 3 && (
-                          <li className="text-sm text-gray-500 dark:text-gray-500">
-                            +{levelData.metadata.prerequisites.length - 3} more
-                          </li>
-                        )}
                       </ul>
                     </div>
                   )}
@@ -238,16 +208,11 @@ export default function TutorialLevelClient({
                         You'll Learn
                       </h3>
                       <ul className="space-y-1">
-                        {levelData.metadata.learningOutcomes.slice(0, 3).map((outcome, index) => (
+                        {levelData.metadata.learningOutcomes.map((outcome, index) => (
                           <li key={index} className="text-sm text-gray-600 dark:text-gray-400">
                             ✓ {outcome}
                           </li>
                         ))}
-                        {levelData.metadata.learningOutcomes.length > 3 && (
-                          <li className="text-sm text-gray-500 dark:text-gray-500">
-                            +{levelData.metadata.learningOutcomes.length - 3} more
-                          </li>
-                        )}
                       </ul>
                     </div>
                   )}
@@ -273,11 +238,13 @@ export default function TutorialLevelClient({
               />
             </div>
           )}
-
-          {/* Next Level Navigation */}
-          <div className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
+        </div>
+      </div>
+    </div>
+    {/* Next Level Navigation */}
+          <div className="mt-12 pt-8 dark:border-gray-700">
             <div className="flex flex-col items-center space-y-4">
-              {nextLevel ? (
+              { nextLevel && (
                 <div className="text-center">
                   <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Ready for the next level?
@@ -305,75 +272,76 @@ export default function TutorialLevelClient({
                     </svg>
                   </Link>
                 </div>
-              ) : isLastLevel ? (
-                <div className="text-center">
-                  <div className="mb-4 rounded-full bg-green-100 p-3 dark:bg-green-900">
-                    <svg
-                      className="mx-auto h-8 w-8 text-green-600 dark:text-green-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                    Congratulations! 🎉
-                  </h3>
-                  <p className="mb-6 text-gray-600 dark:text-gray-400">
-                    You've completed all levels of this tutorial. Great job!
-                  </p>
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <Link
-                      href="/tutorials"
-                      className="inline-flex items-center rounded-lg bg-gray-100 px-6 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-                    >
-                      <svg
-                        className="mr-2 h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                        />
-                      </svg>
-                      Explore More Tutorials
-                    </Link>
-                    <Link
-                      href={`/tutorials/${tutorialData.slug}`}
-                      className="inline-flex items-center rounded-lg bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
-                    >
-                      <svg
-                        className="mr-2 h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                        />
-                      </svg>
-                      Review Tutorial
-                    </Link>
-                  </div>
-                </div>
-              ) : null}
+              )}
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+    {isLastLevel && (
+          <div className="text-center mt-10">
+            <div className="mb-4 rounded-full bg-green-100 p-3 dark:bg-green-900">
+              <svg
+                className="mx-auto h-8 w-8 text-green-600 dark:text-green-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+              Congratulations! 🎉
+            </h3>
+            <p className="mb-6 text-gray-600 dark:text-gray-400">
+              You've completed all levels of this tutorial. Great job!
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row text-center justify-center">
+              <Link
+                href="/tutorials"
+                className="inline-flex items-center rounded-lg bg-gray-100 px-6 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+              >
+              <svg
+                className="mr-2 h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                Explore More Tutorials
+              </Link>
+              <Link
+                href={`/tutorials/${tutorialData.slug}`}
+                className="inline-flex items-center rounded-lg bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              >
+                <svg
+                  className="mr-2 h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+                Review Tutorial
+              </Link>
+            </div>
+          </div>
+        )}
+    </>
+    
+    
   )
 }
