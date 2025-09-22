@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import CodeTabs from '@/components/CodeTabs'
 import type { TutorialLevelData, CodeFile } from '@/lib/tutorials'
+import YoutubeSidebar from '@/components/YoutubeSidebar'
 
 interface TutorialData {
   name: string
@@ -47,11 +48,11 @@ export default function TutorialLevelClient({
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-white shadow-lg transition-transform duration-200 lg:relative lg:translate-x-0 dark:bg-gray-800 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 min-w-64 flex-shrink-0 transform bg-white shadow-lg transition-transform duration-200 lg:relative lg:translate-x-0 dark:bg-gray-800 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex h-full flex-col">
+        <div className="flex flex-col">
           {/* Sidebar Header */}
           <div className="border-b border-gray-200 p-6 dark:border-gray-700">
             <div className="flex items-center justify-between">
@@ -112,6 +113,17 @@ export default function TutorialLevelClient({
             </ul>
           </nav>
         </div>
+         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+         <span className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-8">More from TechLever YouTube Channel</span>
+         <div className="mt-4">
+         <YoutubeSidebar
+              playlistId="PLFmoTa4E3esuwfdH_tJoOIaaBj9u44R4y"
+              apiKey="AIzaSyAsE1ceA5UaeplcLv44FHFRR7T4ip37NuA"
+            />
+         </div>
+   
+          </div>     
+        
       </div>
 
       {/* Overlay for mobile */}

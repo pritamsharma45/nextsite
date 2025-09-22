@@ -81,7 +81,7 @@ export default async function TutorialPage(props: TutorialPageProps) {
             href="/tutorials"
             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
           >
-            ← Back to Tutorials
+            ← Go Back
           </Link>
         </div>
 
@@ -110,18 +110,18 @@ export default async function TutorialPage(props: TutorialPageProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
-                        {level.charAt(0).toUpperCase() + level.slice(1)} Level
+                        {level.charAt(0).toUpperCase() + level.slice(1)} 
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400">
+                      {/* <p className="text-gray-600 dark:text-gray-400">
                         Learn {tutorialData.name} at {level} level
-                      </p>
+                      </p> */}
                     </div>
                     <div className="flex items-center space-x-3">
-                      <span
+                      {/* <span
                         className={`rounded px-3 py-1 text-sm font-medium ${getLevelStyles(level)}`}
                       >
                         {level.charAt(0).toUpperCase() + level.slice(1)}
-                      </span>
+                      </span> */}
                       <svg
                         className="h-5 w-5 text-gray-400"
                         fill="none"
@@ -142,6 +142,7 @@ export default async function TutorialPage(props: TutorialPageProps) {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   )

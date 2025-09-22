@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CodeFile } from '@/lib/tutorials'
 
 interface CodeTabsProps {
@@ -11,6 +11,8 @@ interface CodeTabsProps {
 
 export default function CodeTabs({ tutorialSlug, level, files }: CodeTabsProps) {
   const [activeTab, setActiveTab] = useState(files[0]?.name || '')
+  const [copied, setCopied] = useState(false)
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   if (!files || files.length === 0) {
     return (
@@ -21,6 +23,22 @@ export default function CodeTabs({ tutorialSlug, level, files }: CodeTabsProps) 
   }
 
   const activeFile = files.find((file) => file.name === activeTab) || files[0]
+
+  // Reset copied state when switching files
+  useEffect(() => {
+    setCopied(false)
+    if (copyTimeoutRef.current) {
+      clearTimeout(copyTimeoutRef.current)
+      copyTimeoutRef.current = null
+    }
+  }, [activeTab])
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current)
+    }
+  }, [])
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -47,11 +65,18 @@ export default function CodeTabs({ tutorialSlug, level, files }: CodeTabsProps) 
           <button
             onClick={() => {
               navigator.clipboard.writeText(activeFile.content)
+              setCopied(true)
+              if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current)
+              copyTimeoutRef.current = setTimeout(() => setCopied(false), 1500)
             }}
-            className="rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600"
+            className={`rounded px-2 py-1 text-xs transition-colors ${
+              copied
+                ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600'
+            }`}
             title="Copy to clipboard"
           >
-            Copy
+            {copied ? 'Copied' : 'Copy'}
           </button>
         </div>
 

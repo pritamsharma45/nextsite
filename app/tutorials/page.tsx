@@ -39,8 +39,8 @@ export default async function TutorialsIndex() {
           <>
             {/* Tutorials Grid */}
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                Available Tutorials
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-600 via-indigo-600 to-pink-600 bg-clip-text text-transparent">
+                Apps Script Bytes
               </h2>
               <div className="grid gap-6 md:grid-cols-1">
                 {tutorials.map((tutorial) => (
