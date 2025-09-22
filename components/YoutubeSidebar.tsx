@@ -113,7 +113,7 @@ export default function YoutubeSidebar({
   return (
     <ul className="flex flex-col gap-4">
       {videos.map((video) => (
-        <li key={video.id}>
+        <li key={video.id} className="mt-4">
           <Link
             href={`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`}
             target="_blank"

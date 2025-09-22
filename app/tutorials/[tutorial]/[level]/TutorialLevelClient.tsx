@@ -161,11 +161,8 @@ export default function TutorialLevelClient({
             <div className="rounded-lg py-4">
               <div className="flex flex-row gap-4">
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                  <span
-                    className={`mr-2 inline-block h-2 w-2 rounded-full ${getLevelStyles(
-                      levelData.metadata.difficulty || tutorialData.level
-                    )}`}
-                  />
+
+                🎓  {" "}
                   {(levelData.metadata.difficulty || tutorialData.level)
                     ?.charAt(0)
                     .toUpperCase() +
