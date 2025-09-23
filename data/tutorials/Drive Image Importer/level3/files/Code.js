@@ -1,6 +1,6 @@
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
-  ui.createMenu("Image Importer").addItem("Insert Images", "insertImages").addItem("Open Sidebar", "showSidebar").addToUi();
+  ui.createMenu("Image Importer").addItem("Import", "insertImages").addItem("Open Sidebar", "showSidebar").addToUi();
 }
 
 function showSidebar() {
@@ -25,7 +25,7 @@ function insertFilesIntoSheet(folderId, sheet) {
     var file = files.next();
     var fileId = file.getId();
     var thumbnailUrl = "https://drive.google.com/thumbnail?id=" + fileId + "&sz=200";
-    rows.push([file.getName(), thumbnailUrl, '=IMAGE("' + thumbnailUrl + '")']);
+    rows.push([file.getName().split('.')[0], thumbnailUrl, '=IMAGE("' + thumbnailUrl + '")']);
   }
   sheet.clear();
   sheet.getRange(1, 1, rows.length, rows[0].length).setValues(rows);
@@ -48,7 +48,7 @@ function getImageList() {
     var file = files.next();
     var fileId = file.getId();
     results.push({
-      name: file.getName(),
+      name: file.getName().split('.')[0],
       url: "https://drive.google.com/file/d/" + fileId + "/view",
       thumb: "https://drive.google.com/thumbnail?id=" + fileId + "&sz=200"
     });

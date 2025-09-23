@@ -4,7 +4,7 @@ function onOpen() {
 }
 
 function showSidebar() {
-  var html = HtmlService.createHtmlOutputFromFile("Sidebar").setTitle("Get Images");
+  var html = HtmlService.createHtmlOutputFromFile("Sidebar").setTitle("Google Drive Image Importer");
   SpreadsheetApp.getUi().showSidebar(html);
 }
 
@@ -50,7 +50,7 @@ function insertFilesIntoSheet(folderId, sheet) {
     var file = files.next();
     var fileId = file.getId();
     var thumbnailUrl = "https://drive.google.com/thumbnail?id=" + fileId + "&sz=200";
-    rows.push([file.getName(), thumbnailUrl, '=IMAGE("' + thumbnailUrl + '")']);
+    rows.push([file.getName().split('.')[0], thumbnailUrl, '=IMAGE("' + thumbnailUrl + '")']);
   }
   sheet.clear();
   sheet.getRange(1, 1, rows.length, rows[0].length).setValues(rows);
@@ -72,7 +72,7 @@ function getImageList() {
     var file = files.next();
     var fileId = file.getId();
     results.push({
-      name: file.getName(),
+      name: file.getName().split('.')[0],
       url: "https://drive.google.com/file/d/" + fileId + "/view",
       thumb: "https://drive.google.com/thumbnail?id=" + fileId + "&sz=200",
     });

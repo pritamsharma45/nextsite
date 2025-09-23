@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 6px;
+      font-size: 13px;
+      background: #f9f9f9;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 6px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      background: #ddd;
+      cursor: pointer;
+    }
+
+    .card img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      transform: scale(0.98);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .card img.loaded {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .overlay {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 40%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 4px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .overlay span {
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .card:hover .overlay,
+    .card:focus .overlay {
+      opacity: 1;
+    }
+
+    #status {
+      text-align: center;
+      font-size: 12px;
+      margin: 6px 0;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #4285f4;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    .container {
+      max-width: 960px;
+      /* keeps it centered on desktop */
+      margin: 0 auto;
+      padding: 20px 12px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin: 0 0 6px;
+      font-weight: bold;
+      color: #222;
+    }
+
+
+
+    .hero {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      /* larger title */
+      font-weight: 800;
+      margin: 0 0 16px;
+      background: linear-gradient(90deg, #ff6a00, #ee0979);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 2.2rem;
+      font-weight: 500;
+      margin: 0;
+      line-height: 1.5;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+
+
+    .status {
+      text-align: center;
+      margin: 12px 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="hero-title">Property Gallery</h1>
+      <p class="hero-subtitle">Explore our curated listings of premium real estate properties</p>
+    </header>
+
+    <div id="status" class="status">
+      <div class="spinner"></div>Loading images…
+    </div>
+
+    <div id="gallery" class="gallery"></div>
+  </div>
+
+
+
+  <script>
+    function loadImages() {
+        const gallery = document.getElementById("gallery");
+        const status = document.getElementById("status");
+
+        google.script.run
+          .withSuccessHandler(images => {
+            status.innerHTML = "";
+            if (!images || images.length === 0) {
+              status.innerHTML = "No images found.";
+              return;
+            }
+
+            let i = 0;
+            function addNext() {
+              if (i >= images.length) return;
+              const imgData = images[i];
+
+              const card = document.createElement("div");
+              card.className = "card";
+              card.onclick = () => window.open(imgData.url, "_blank");
+
+              const img = document.createElement("img");
+              img.src = imgData.thumb;
+              img.alt = imgData.name;
+              img.onload = () => img.classList.add("loaded");
+
+              const overlay = document.createElement("div");
+              overlay.className = "overlay";
+              overlay.innerHTML = `<span>${imgData.name}</span>`;
+
+              card.appendChild(img);
+              card.appendChild(overlay);
+              gallery.appendChild(card);
+
+              i++;
+              setTimeout(addNext, 100); // staggered load every 0.4s
+            }
+
+            addNext();
+          })
+          .withFailureHandler(err => {
+            status.innerHTML = "❌ " + err.message;
+          })
+          .getImageList(); // backend function from Apps Script
+      }
+
+      document.addEventListener("DOMContentLoaded", loadImages);
+  </script>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
-  ui.createMenu("Custom Menu").addItem("Insert Images", "insertImages").addToUi();
+  ui.createMenu("Image Importer").addItem("Import", "insertImages").addToUi();
 }
 
 function insertImages() {
@@ -20,7 +20,7 @@ function insertFilesIntoSheet(folderId, sheet) {
     var file = files.next();
     var fileId = file.getId();
     var thumbnailUrl = "https://drive.google.com/thumbnail?id=" + fileId + "&sz=200";
-    rows.push([file.getName(), thumbnailUrl, '=IMAGE("' + thumbnailUrl + '")']);
+    rows.push([file.getName().split('.')[0], thumbnailUrl, '=IMAGE("' + thumbnailUrl + '")']);
   }
   sheet.clear();
   sheet.getRange(1, 1, rows.length, rows[0].length).setValues(rows);

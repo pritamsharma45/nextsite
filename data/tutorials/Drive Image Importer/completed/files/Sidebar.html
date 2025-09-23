@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base target="_top" />
+    <base target="_top">
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 0;
-        padding: 10px;
+        padding: 4px;
         font-size: 13px;
       }
       h3 {
@@ -15,8 +15,12 @@
         font-weight: bold;
         text-align: center;
       }
+      btn-container{
+        display: flex;
+        flex-direction: row;
+      }
       button {
-        width: 100%;
+
         padding: 8px;
         margin: 5px 0;
         background: #4285f4;
@@ -24,7 +28,7 @@
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        font-size: 13px;
+        font-size: 12px;
       }
       button:disabled {
         background: #ccc;
@@ -41,12 +45,22 @@
         gap: 6px;
         margin-top: 10px;
       }
-      .grid img {
-        width: 100%;
-        border-radius: 4px;
-        cursor: pointer;
-        display: block;
-      }
+.grid img {
+  width: 100%;
+  aspect-ratio: 4 / 3;     /* Force 4:3 aspect ratio */
+  object-fit: cover;       /* Crop edges, keep filling */
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.grid img.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
       .spinner {
         border: 3px solid #f3f3f3;
         border-top: 3px solid #4285f4;
@@ -59,19 +73,17 @@
         margin-right: 4px;
       }
       @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
     </style>
   </head>
   <body>
-    <h3>Drive Image Importer</h3>
+   <div class="btn-container">
     <button id="insertBtn" onclick="insertImages()">Insert Images in Sheet</button>
     <button id="importBtn" onclick="importImages()">Import Images in Sidebar</button>
+   </div>
+
     <div id="status"></div>
     <div id="grid" class="grid"></div>
 
@@ -87,7 +99,7 @@
             btn.disabled = false;
             status.innerHTML = "✅ Inserted into sheet.";
           })
-          .withFailureHandler((err) => {
+          .withFailureHandler(err => {
             btn.disabled = false;
             status.innerHTML = "❌ " + err.message;
           })
@@ -103,16 +115,34 @@
         status.innerHTML = '<div class="spinner"></div>Loading images…';
 
         google.script.run
-          .withSuccessHandler((images) => {
+          .withSuccessHandler(images => {
             btn.disabled = false;
             status.innerHTML = "";
             if (!images || images.length === 0) {
               status.innerHTML = "No images found.";
               return;
             }
-            grid.innerHTML = images.map((img) => `<img src="${img.thumb}" alt="${img.name}" onclick="window.open('${img.url}', '_blank')">`).join("");
+
+            let i = 0;
+            function addNextImage() {
+              if (i >= images.length) return;
+              const img = images[i];
+              const el = document.createElement("img");
+              el.src = img.thumb;
+              el.alt = img.name;
+              el.onclick = () => window.open(img.url, "_blank");
+              grid.appendChild(el);
+
+              // trigger fade-in animation
+              setTimeout(() => el.classList.add("loaded"), 50);
+
+              i++;
+              setTimeout(addNextImage, 500); // delay 0.5s
+            }
+
+            addNextImage();
           })
-          .withFailureHandler((err) => {
+          .withFailureHandler(err => {
             btn.disabled = false;
             status.innerHTML = "❌ " + err.message;
           })
