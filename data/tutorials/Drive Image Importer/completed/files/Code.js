@@ -8,6 +8,13 @@ function showSidebar() {
   SpreadsheetApp.getUi().showSidebar(html);
 }
 
+
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile("Index")
+    .setTitle("Property Gallery")
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
 function insertImages() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var ui = SpreadsheetApp.getUi();
