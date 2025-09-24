@@ -58,11 +58,11 @@ function insertFilesIntoSheet(folderId, sheet) {
 
 function getImageList() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var configSheet = ss.getSheetByName("Configuration");
-  if (!configSheet) throw new Error("Configuration sheet not found.");
+  var configSheet = ss.getSheetByName("Config");
+  if (!configSheet) throw new Error("Config sheet not found.");
 
   var folderId = configSheet.getRange("A1").getValue();
-  if (!folderId) throw new Error("No folder ID in Configuration!A1.");
+  if (!folderId) throw new Error("No folder ID in Config!A1.");
 
   var folder = DriveApp.getFolderById(folderId);
   var files = folder.getFiles();
